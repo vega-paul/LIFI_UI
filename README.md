@@ -1,6 +1,6 @@
 # Jumper Exchange UI Automation Framework
 
-This project contains UI automation tests for the Jumper Exchange platform using Playwright and Page Object Model (POM).
+This project contains UI automation tests for the Jumper Exchange platform using Playwright with pytest and Page Object Model (POM).
 
 ## Setup Instructions
 
@@ -10,41 +10,41 @@ This project contains UI automation tests for the Jumper Exchange platform using
    cd JumperUIAutomation
    ```
 
-2. **Install dependencies:**
+2. **Install Python dependencies:**
    ```bash
-   npm install
+   pip install -r requirements.txt
    ```
 
 3. **Install Playwright browsers:**
    ```bash
-   npx playwright install
+   playwright install
    ```
 
 ## Execution Instructions
 
 ### Run all tests
 ```bash
-npx playwright test
+pytest
 ```
 
 ### Run tests in headed mode (visible browser)
 ```bash
-npx playwright test --headed
+pytest --headed
 ```
 
 ### Run specific test file
 ```bash
-npx playwright test tests/homePageTests.spec.js
+pytest tests/test_home_page.py
 ```
 
 ### Run tests in specific browser
 ```bash
-npx playwright test --project=chromium
+pytest --browser chromium
 ```
 
 ### Generate HTML report
 ```bash
-npx playwright show-report
+pytest --html=reports/report.html
 ```
 
 ## Project Structure
@@ -54,13 +54,14 @@ JumperUIAutomation/
 ├── docs/
 │   └── TestPlan.md          # Test plan and design
 ├── pages/
-│   ├── BasePage.js          # Base page class
-│   └── HomePage.js          # Home page POM
+│   ├── base_page.py         # Base page class
+│   └── home_page.py         # Home page POM
 ├── tests/
-│   └── homePageTests.spec.js # Test specifications
+│   └── test_home_page.py    # Test specifications
 ├── utils/                   # Utility functions
 ├── reports/                 # Test reports
-├── package.json
+├── conftest.py              # Pytest configuration
+├── requirements.txt         # Python dependencies
 └── README.md
 ```
 
@@ -73,8 +74,8 @@ JumperUIAutomation/
 
 ## Configuration
 
-- **Framework:** Playwright
-- **Language:** JavaScript
+- **Framework:** Playwright with pytest
+- **Language:** Python
 - **Pattern:** Page Object Model
 - **Browsers:** Chromium, Firefox, WebKit
 

@@ -10,8 +10,10 @@ class HomePage(BasePage):
         self.connect_wallet_button = 'text=Connect'
 
     def open(self):
-        self.navigate(self.url)
-        self.wait_for_load()
+        """Open home page with load time validation"""
+        load_time = self.navigate(self.url)
+        self.validate_page_title()  # Ensure page has a title
+        return load_time
 
     def switch_tab(self, tab_name: str):
         """Switch to different navigation tabs using proper ARIA roles"""

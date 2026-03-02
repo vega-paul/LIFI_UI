@@ -89,6 +89,7 @@ JumperUIAutomation/
 - **Language:** Python
 - **Pattern:** Page Object Model
 - **Browsers:** Chromium, Firefox, WebKit
+- **IDE:** VSCode configured for pytest with debugging support
 
 ## CI/CD
 

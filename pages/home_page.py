@@ -7,7 +7,7 @@ class HomePage(BasePage):
         self.url = 'https://jumper.exchange'  # Update with actual URL if different
         self.menu_button = "//button[@id='main-burger-menu-button']//*[name()='svg']"
         self.tabs = '[data-testid="tab"]'  # Placeholder for tabs
-        self.connect_wallet_button = '[data-testid="connect-wallet-button"], button:has-text("Connect wallet")'
+        self.connect_wallet_button = 'p:has-text("Connect")'
 
     def open(self):
         """Open home page with load time validation"""

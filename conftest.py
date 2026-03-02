@@ -109,6 +109,9 @@ def browser_launch_args(browser_launch_args, request):
                 "dom.max_chrome_script_run_time": 0,
                 "dom.ipc.processCount": 1,  # Reduce process count for CI
                 "dom.max_child_processes": 1,  # Limit child processes
+                "media.peerconnection.enabled": False,  # Disable WebRTC
+                "media.navigator.enabled": False,  # Disable media navigator
+                "dom.webnotifications.enabled": False,  # Disable notifications
             },
             "args": [
                 "--disable-gpu",
@@ -120,6 +123,9 @@ def browser_launch_args(browser_launch_args, request):
                 "--disable-background-timer-throttling",
                 "--disable-renderer-backgrounding",
                 "--disable-backgrounding-occluded-windows",
+                "--disable-background-media-download",
+                "--disable-features=VizDisplayCompositor",
+                "--headless",  # Explicit headless mode
             ]
         })
 

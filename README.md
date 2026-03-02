@@ -10,12 +10,18 @@ This project contains UI automation tests for the Jumper Exchange platform using
    cd JumperUIAutomation
    ```
 
-2. **Install Python dependencies:**
+2. **Create and activate virtual environment:**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install Python dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Install Playwright browsers:**
+4. **Install Playwright browsers:**
    ```bash
    playwright install
    ```

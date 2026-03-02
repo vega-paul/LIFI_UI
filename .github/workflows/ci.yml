@@ -54,3 +54,10 @@ jobs:
         name: test-results-${{ matrix.browser }}
         path: reports/
         retention-days: 30
+
+    - name: Test completion summary
+      if: always()
+      run: |
+        echo "🎉 Test execution completed for ${{ matrix.browser }}"
+        echo "📊 Test results uploaded as: test-results-${{ matrix.browser }}"
+        echo "📄 HTML report available at: reports/report-${{ matrix.browser }}.html"

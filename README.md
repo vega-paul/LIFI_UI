@@ -45,9 +45,9 @@ pytest tests/test_home_page.py
 
 ### Run tests in specific browser
 ```bash
-pytest --browser chromium
+pytest --browser chrome
+pytest --browser edge
 pytest --browser firefox
-pytest --browser webkit
 ```
 
 ### Run tests on all browsers (parallel execution)
@@ -95,7 +95,7 @@ JumperUIAutomation/
 - **Framework:** Playwright with pytest
 - **Language:** Python
 - **Pattern:** Page Object Model
-- **Browsers:** Chromium, Firefox, WebKit
+- **Browsers:** Chrome, Edge, Firefox
 - **IDE:** VSCode configured for pytest with debugging support
 
 ## CI/CD
@@ -134,7 +134,7 @@ Test results are generated in HTML format and stored in the `reports/` directory
    - Project structure overview
 
 5. **Bonus: CI/CD Workflow** — GitHub Actions pipeline
-   - Automated testing on push/PR for all browsers (Chromium, Firefox, WebKit)
+   - Automated testing on push/PR for all browsers (Chrome, Edge, Firefox)
    - Parallel browser execution in CI/CD
    - Separate test result artifacts for each browser
 

@@ -46,9 +46,15 @@ jobs:
     - name: Run pytest tests (${{ matrix.browser }})
       run: |
         echo "🚀 Starting pytest for ${{ matrix.browser }} (all tests)..."
-        set -e
         pytest --browser ${{ matrix.browser }} --html=reports/report-${{ matrix.browser }}.html --self-contained-html -v -s --tb=short --maxfail=1
-        echo "✅ Pytest completed successfully for ${{ matrix.browser }}"
+        PYTEST_EXIT_CODE=$?
+        echo "📊 Pytest exit code: $PYTEST_EXIT_CODE"
+        if [ $PYTEST_EXIT_CODE -eq 0 ]; then
+          echo "✅ Pytest completed successfully for ${{ matrix.browser }}"
+        else
+          echo "❌ Pytest failed with exit code $PYTEST_EXIT_CODE for ${{ matrix.browser }}"
+        fi
+        exit $PYTEST_EXIT_CODE
 
     - name: Upload test results (${{ matrix.browser }})
       uses: actions/upload-artifact@v4
@@ -65,3 +71,6 @@ jobs:
         echo "🎉 Test execution completed for ${{ matrix.browser }}"
         echo "📊 Test results uploaded as: test-results-${{ matrix.browser }}"
         echo "📄 HTML report available at: reports/report-${{ matrix.browser }}.html"
+        echo "✅ Job completed successfully - preventing GitHub Actions cancellation"
+        # Add a small delay to ensure clean job completion
+        sleep 2

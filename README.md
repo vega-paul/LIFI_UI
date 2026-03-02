@@ -46,6 +46,13 @@ pytest tests/test_home_page.py
 ### Run tests in specific browser
 ```bash
 pytest --browser chromium
+pytest --browser firefox
+pytest --browser webkit
+```
+
+### Run tests on all browsers (parallel execution)
+```bash
+pytest  # Runs on all browsers by default
 ```
 
 ### Generate HTML report
@@ -127,9 +134,9 @@ Test results are generated in HTML format and stored in the `reports/` directory
    - Project structure overview
 
 5. **Bonus: CI/CD Workflow** — GitHub Actions pipeline
-   - Automated testing on push/PR
-   - Test result artifacts
-   - Multi-browser testing support
+   - Automated testing on push/PR for all browsers (Chromium, Firefox, WebKit)
+   - Parallel browser execution in CI/CD
+   - Separate test result artifacts for each browser
 
 ### 🔧 Current Issues
 

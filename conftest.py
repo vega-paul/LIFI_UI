@@ -34,9 +34,7 @@ root_logger.setLevel(logging.DEBUG)
 root_logger.addHandler(immediate_stream_handler)
 root_logger.addHandler(immediate_file_handler)
 
-@pytest.fixture(scope="session")
-def browser_name():
-    return "webkit"
+
 
 @pytest.fixture(scope="session")
 def browser_context_args(browser_context_args):

@@ -9,6 +9,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
 
     steps:
     - uses: actions/checkout@v3
@@ -24,13 +27,13 @@ jobs:
     - name: Install Playwright browsers
       run: playwright install --with-deps
 
-    - name: Run pytest tests
-      run: pytest --html=reports/report.html --self-contained-html
+    - name: Run pytest tests (${{ matrix.browser }})
+      run: pytest --browser ${{ matrix.browser }} --html=reports/report-${{ matrix.browser }}.html --self-contained-html
 
-    - name: Upload test results
+    - name: Upload test results (${{ matrix.browser }})
       uses: actions/upload-artifact@v3
       if: always()
       with:
-        name: test-results
+        name: test-results-${{ matrix.browser }}
         path: reports/
         retention-days: 30

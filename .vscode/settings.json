@@ -6,5 +6,7 @@
     "--config-file",
     "pytest.ini"
   ],
-  "python.testing.pytestPath": "pytest"
+  "python.testing.pytestPath": "pytest",
+  "python.testing.cwd": "${workspaceFolder}",
+  "python.testing.autoTestDiscoverOnSaveEnabled": true
 }

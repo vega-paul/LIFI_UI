@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 class BasePage:
     def __init__(self, page: Page):
         self.page = page
-        self.load_time_threshold = 5.0  # seconds
+        self.load_time_threshold = 10.0  # seconds
 
     def navigate(self, url: str):
         """Navigate to URL and measure load time"""

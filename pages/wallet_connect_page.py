@@ -38,12 +38,64 @@ class WalletConnectPage(BasePage):
             logger.error("Wallet modal is not open - cannot select wallet")
             raise Exception("Wallet modal is not open")
 
-        if wallet_name == "Abstract":
-            logger.info("Selecting Abstract wallet - clicking installed selector")
-            installed_selector = "//body/div[@role='presentation']/div[@role='presentation']/div[@role='dialog']/div[@id='widget-wallet-modal-content']/div[@class='MuiCollapse-root MuiCollapse-vertical MuiCollapse-entered mui-1cbf1l2']/div[@class='MuiCollapse-wrapper MuiCollapse-vertical mui-15830to']/div[@class='MuiCollapse-wrapperInner MuiCollapse-vertical mui-9vd5ud']/div[@class='MuiList-root MuiList-padding mui-vnvcgk']/div[1]/..//span[normalize-space()='Installed']"
+        if wallet_name == "Rabby Wallet":
+            logger.info("Selecting Rabby Wallet - clicking installed selector")
+            installed_selector = "//body/div[@role='presentation']/div[@role='presentation']/div[@role='dialog']/div[@id='widget-wallet-modal-content']/div[@class='MuiCollapse-root MuiCollapse-vertical MuiCollapse-entered mui-1cbf1l2']/div[@class='MuiCollapse-wrapper MuiCollapse-vertical mui-15830to']/div[@class='MuiCollapse-wrapperInner MuiCollapse-vertical mui-9vd5ud']/div[@class='MuiList-root MuiList-padding mui-vnvcgk']/div[2]/..//span[@class='MuiChip-label MuiChip-labelMedium mui-14vsv3w'][normalize-space()='Installed']"
             with self.page.expect_popup() as self.popup_info:
                 self.page.click(installed_selector)
                 logger.info("Clicked installed selector, waiting for popup")
+
+    def connect_rabby_wallet_extension(self):
+        """Handle Rabby Wallet Chrome extension popup connection"""
+        logger.info("Handling Rabby Wallet extension popup connection")
+        try:
+            # Wait for the extension popup
+            extension_popup = self.page.wait_for_event("popup", timeout=10000)
+            logger.info("Rabby Wallet extension popup detected")
+
+            # Wait for popup to load
+            extension_popup.wait_for_load_state()
+            logger.info("Extension popup loaded")
+
+            # Click the Connect button using the provided selectors
+            # Try multiple selectors in case the DOM structure changes
+            connect_clicked = False
+
+            # Try aria selector first
+            try:
+                extension_popup.get_by_role("button", name="Connect").click()
+                connect_clicked = True
+                logger.info("Clicked Connect button using aria selector")
+            except Exception as e:
+                logger.warning(f"Connect button aria selector failed: {e}")
+
+            # Try CSS selector if aria failed
+            if not connect_clicked:
+                try:
+                    extension_popup.locator("button.mb-0 > span").click()
+                    connect_clicked = True
+                    logger.info("Clicked Connect button using CSS selector")
+                except Exception as e:
+                    logger.warning(f"Connect button CSS selector failed: {e}")
+
+            # Try XPath selector as last resort
+            if not connect_clicked:
+                try:
+                    extension_popup.locator("//*[@id='root']/div/div/div/div/div[2]/div/div[2]/button[1]/span").click()
+                    connect_clicked = True
+                    logger.info("Clicked Connect button using XPath selector")
+                except Exception as e:
+                    logger.error(f"All Connect button selectors failed: {e}")
+                    raise Exception("Could not find Connect button in Rabby Wallet extension popup")
+
+            if connect_clicked:
+                logger.info("Successfully connected to Rabby Wallet via extension")
+            else:
+                raise Exception("Failed to click Connect button in extension popup")
+
+        except Exception as e:
+            logger.error(f"Failed to handle Rabby Wallet extension popup: {e}")
+            raise
 
     def close_wallet_popup(self):
         logger.info("Closing wallet authentication popup")

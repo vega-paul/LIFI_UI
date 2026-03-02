@@ -73,11 +73,7 @@ def check_playwright():
         except AttributeError:
             print("✅ Playwright installed (version unknown)")
     except ImportError:
-        print("❌ Playwright not installed")
-        return False
-
-    # Check playwright browsers
-    playwright_path = Path.home() / "Library/Caches/ms-playwright"
+        print("❌ Playwright not
     if playwright_path.exists():
         print(f"✅ Playwright cache exists: {playwright_path}")
         browsers = list(playwright_path.glob("*-*"))

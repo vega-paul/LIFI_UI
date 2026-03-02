@@ -14,7 +14,7 @@ def wallet_home_page(page):
     logger.info(f"✅ HomePage opened successfully in {load_time:.2f} seconds")
     return home_page
 
-def test_wallet_setup_happy_path(wallet_home_page, wallet_name="Abstract"):
+def test_wallet_setup_happy_path(wallet_home_page, wallet_name="Rabby Wallet"):
     logger.info("Starting wallet setup happy path test")
 
     # Validate page load times and basic page state
@@ -60,6 +60,21 @@ def test_wallet_setup_happy_path(wallet_home_page, wallet_name="Abstract"):
         try:
             wallet_connect.select_wallet(wallet_name)
             logger.info(f"Successfully selected {wallet_name} wallet")
+
+            # Handle Rabby Wallet extension popup connection
+            if wallet_name == "Rabby Wallet":
+                wallet_connect.connect_rabby_wallet_extension()
+                logger.info("Successfully connected to Rabby Wallet via extension")
+
+                # Verify Rabby Wallet connection by checking for 0Pass link
+                import re
+                try:
+                    pass_link = wallet_home_page.page.get_by_role("link", name=re.compile(r"0Pass", re.IGNORECASE))
+                    pass_link.wait_for(state="visible", timeout=5000)
+                    logger.info("✅ Rabby Wallet connection verified - 0Pass link is visible")
+                except Exception as verify_error:
+                    logger.warning(f"Could not verify Rabby Wallet connection via 0Pass link: {verify_error}")
+
             wallet_connect.close_wallet_popup()
             wallet_connect.close_wallet_modal()
             logger.info("Wallet popup and modal closed successfully")

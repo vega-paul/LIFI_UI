@@ -52,7 +52,11 @@ pytest --browser firefox
 
 ### Run tests on all browsers (parallel execution)
 ```bash
-pytest  # Runs on all browsers by default
+# CI/CD runs on all browsers automatically (Chrome, Edge, Firefox)
+# For local multi-browser testing, run separately:
+pytest --browser chromium
+pytest --browser firefox
+pytest --browser webkit
 ```
 
 ### Troubleshooting Browser Issues

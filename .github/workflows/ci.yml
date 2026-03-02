@@ -25,7 +25,7 @@ jobs:
       run: pip install -r requirements.txt
 
     - name: Install Playwright browsers
-      run: playwright install --with-deps
+      run: playwright install
 
     - name: Run pytest tests (${{ matrix.browser }})
       run: pytest --browser ${{ matrix.browser }} --html=reports/report-${{ matrix.browser }}.html --self-contained-html

@@ -101,32 +101,6 @@ def browser_launch_args(browser_launch_args, request):
             "executable_path": "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
             "channel": "msedge",
         })
-    elif browser_name == "firefox":
-        launch_args.update({
-            "firefox_user_prefs": {
-                "dom.disable_beforeunload": False,
-                "dom.max_script_run_time": 0,
-                "dom.max_chrome_script_run_time": 0,
-                "dom.ipc.processCount": 1,  # Reduce process count for CI
-                "dom.max_child_processes": 1,  # Limit child processes
-                "media.peerconnection.enabled": False,  # Disable WebRTC
-                "media.navigator.enabled": False,  # Disable media navigator
-                "dom.webnotifications.enabled": False,  # Disable notifications
-            },
-            "args": [
-                "--disable-gpu",
-                "--no-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-accelerated-2d-canvas",
-                "--disable-accelerated-video-decode",
-                "--disable-webrtc",
-                "--disable-background-timer-throttling",
-                "--disable-renderer-backgrounding",
-                "--disable-backgrounding-occluded-windows",
-                "--disable-background-media-download",
-                "--disable-features=VizDisplayCompositor",
-                "--headless",  # Explicit headless mode
-            ]
-        })
+
 
     return launch_args

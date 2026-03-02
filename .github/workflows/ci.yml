@@ -32,6 +32,9 @@ jobs:
     - name: Install Playwright browsers
       run: playwright install
 
+    - name: Check website accessibility
+      run: curl -f -s --max-time 30 https://jumper.exchange/ || (echo "Website not accessible" && exit 1)
+
     - name: Run pytest tests (${{ matrix.browser }})
       run: pytest --browser ${{ matrix.browser }} --html=reports/report-${{ matrix.browser }}.html --self-contained-html
 

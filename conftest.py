@@ -46,6 +46,7 @@ def browser_context_args(browser_context_args):
         },
         "ignore_https_errors": True,
         "bypass_csp": True,
+        "timeout": 30000,  # 30 second timeout for page operations
     }
 
 @pytest.fixture(scope="session")
@@ -71,7 +72,7 @@ def browser_launch_args(browser_launch_args, request):
     # Base launch args
     launch_args = {
         **browser_launch_args,
-        "headless": False,  # Start with headed mode for debugging
+        "headless": True,  # Run headless in CI for better performance
         "args": [
             "--disable-web-security",
             "--disable-features=VizDisplayCompositor",

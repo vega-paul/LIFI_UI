@@ -11,8 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        browser: [chromium]
-        test_file: [test_home_page.py, test_wallet_page.py]
+        browser: [chromium, firefox]
 
     steps:
     - uses: actions/checkout@v4
@@ -44,25 +43,25 @@ jobs:
         fi
         echo "📊 Website accessibility check completed"
 
-    - name: Run pytest tests (${{ matrix.browser }} - ${{ matrix.test_file }})
+    - name: Run pytest tests (${{ matrix.browser }})
       run: |
-        echo "Starting pytest for ${{ matrix.browser }} - ${{ matrix.test_file }}..."
+        echo "🚀 Starting pytest for ${{ matrix.browser }} (all tests)..."
         set -e
-        pytest tests/${{ matrix.test_file }} --browser ${{ matrix.browser }} --html=reports/report-${{ matrix.browser }}-${{ matrix.test_file }}.html --self-contained-html -v -s --tb=short --maxfail=1
-        echo "✅ Pytest completed successfully for ${{ matrix.browser }} - ${{ matrix.test_file }}"
+        pytest --browser ${{ matrix.browser }} --html=reports/report-${{ matrix.browser }}.html --self-contained-html -v -s --tb=short --maxfail=1
+        echo "✅ Pytest completed successfully for ${{ matrix.browser }}"
 
-    - name: Upload test results (${{ matrix.browser }} - ${{ matrix.test_file }})
+    - name: Upload test results (${{ matrix.browser }})
       uses: actions/upload-artifact@v4
       if: always()
       continue-on-error: true
       with:
-        name: test-results-${{ matrix.browser }}-${{ matrix.test_file }}
+        name: test-results-${{ matrix.browser }}
         path: reports/
         retention-days: 30
 
     - name: Test completion summary
       if: always()
       run: |
-        echo "🎉 Test execution completed for ${{ matrix.browser }} - ${{ matrix.test_file }}"
-        echo "📊 Test results uploaded as: test-results-${{ matrix.browser }}-${{ matrix.test_file }}"
-        echo "📄 HTML report available at: reports/report-${{ matrix.browser }}-${{ matrix.test_file }}.html"
+        echo "🎉 Test execution completed for ${{ matrix.browser }}"
+        echo "📊 Test results uploaded as: test-results-${{ matrix.browser }}"
+        echo "📄 HTML report available at: reports/report-${{ matrix.browser }}.html"

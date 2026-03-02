@@ -47,7 +47,8 @@ jobs:
     - name: Run pytest tests (${{ matrix.browser }})
       run: |
         echo "🚀 Starting pytest for ${{ matrix.browser }} (all tests)..."
-        pytest --browser ${{ matrix.browser }} --html=reports/report-${{ matrix.browser }}.html --self-contained-html -v -s --tb=short --maxfail=1 || true
+        mkdir -p reports
+        pytest --browser ${{ matrix.browser }} --html=reports/test_report-${{ matrix.browser }}.html --self-contained-html -v -s --tb=short --maxfail=1 || true
         PYTEST_EXIT_CODE=$?
         echo "📊 Pytest exit code: $PYTEST_EXIT_CODE"
         if [ $PYTEST_EXIT_CODE -eq 0 ]; then

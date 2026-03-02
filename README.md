@@ -52,11 +52,11 @@ pytest --browser webkit    # Safari (WebKit)
 
 ### Run tests on all browsers (parallel execution)
 ```bash
-# CI/CD runs on Chromium and Firefox automatically
+# CI/CD runs on Chromium and Firefox automatically (Linux-compatible)
 # For local multi-browser testing, run separately:
-pytest --browser chromium
-pytest --browser firefox
-pytest --browser webkit
+pytest --browser chromium  # Linux/macOS/Windows
+pytest --browser firefox   # Linux/macOS/Windows
+pytest --browser webkit    # macOS only (not available on Linux CI/CD)
 ```
 
 ### Troubleshooting Browser Issues
@@ -125,7 +125,7 @@ JumperUIAutomation/
 - **Framework:** Playwright with pytest
 - **Language:** Python
 - **Pattern:** Page Object Model
-- **Browsers:** Chrome, Edge, Firefox
+- **Browsers:** Chromium (Chrome), Firefox (CI/CD), WebKit (macOS local only)
 - **IDE:** VSCode configured for pytest with debugging support
 
 ## CI/CD

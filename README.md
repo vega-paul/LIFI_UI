@@ -47,6 +47,11 @@ pytest --browser chromium
 pytest --html=reports/report.html
 ```
 
+### View logs
+```bash
+tail -f pytest.log
+```
+
 ## Project Structure
 
 ```

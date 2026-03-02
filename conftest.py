@@ -107,7 +107,20 @@ def browser_launch_args(browser_launch_args, request):
                 "dom.disable_beforeunload": False,
                 "dom.max_script_run_time": 0,
                 "dom.max_chrome_script_run_time": 0,
-            }
+                "dom.ipc.processCount": 1,  # Reduce process count for CI
+                "dom.max_child_processes": 1,  # Limit child processes
+            },
+            "args": [
+                "--disable-gpu",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-accelerated-2d-canvas",
+                "--disable-accelerated-video-decode",
+                "--disable-webrtc",
+                "--disable-background-timer-throttling",
+                "--disable-renderer-backgrounding",
+                "--disable-backgrounding-occluded-windows",
+            ]
         })
 
     return launch_args

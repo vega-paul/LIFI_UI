@@ -42,6 +42,7 @@ jobs:
         fi
 
     - name: Run pytest tests (${{ matrix.browser }})
+      timeout-minutes: 10
       run: |
         echo "Starting pytest for ${{ matrix.browser }}..."
         pytest --browser ${{ matrix.browser }} --html=reports/report-${{ matrix.browser }}.html --self-contained-html -v -s

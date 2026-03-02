@@ -45,14 +45,14 @@ pytest tests/test_home_page.py
 
 ### Run tests in specific browser
 ```bash
-pytest --browser chrome
-pytest --browser edge
-pytest --browser firefox
+pytest --browser chromium  # Google Chrome/Chromium
+pytest --browser firefox   # Mozilla Firefox
+pytest --browser webkit    # Safari (WebKit)
 ```
 
 ### Run tests on all browsers (parallel execution)
 ```bash
-# CI/CD runs on all browsers automatically (Chrome, Edge, Firefox)
+# CI/CD runs on Chromium and Firefox automatically
 # For local multi-browser testing, run separately:
 pytest --browser chromium
 pytest --browser firefox

@@ -2,7 +2,8 @@
   "python.testing.pytestEnabled": true,
   "python.testing.unittestEnabled": false,
   "python.testing.pytestArgs": [
-    "tests"
+    "--config-file",
+    "pytest.ini"
   ],
   "python.testing.pytestPath": "pytest"
 }

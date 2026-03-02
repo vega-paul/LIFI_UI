@@ -11,18 +11,31 @@ class BasePage:
 
     def navigate(self, url: str):
         """Navigate to URL and measure load time"""
-        logger.info(f"Navigating to: {url}")
+        logger.info(f"🔗 Starting navigation to: {url}")
         start_time = time.time()
 
-        self.page.goto(url)
-        self.page.wait_for_load_state('networkidle')
+        try:
+            logger.info(f"📡 Executing page.goto({url})")
+            self.page.goto(url)
+            logger.info(f"⏳ Waiting for networkidle state")
+            self.page.wait_for_load_state('networkidle')
+            logger.info(f"✅ Page load state reached")
 
-        load_time = time.time() - start_time
-        logger.info(f"Page loaded in {load_time:.2f} seconds")
+            load_time = time.time() - start_time
+            logger.info(f"⏱️  Page loaded in {load_time:.2f} seconds")
 
-        # Validate page load time
-        assert load_time < self.load_time_threshold, f"Page load time {load_time:.2f}s exceeded {self.load_time_threshold}s threshold"
-        return load_time
+            # Validate page load time
+            if load_time >= self.load_time_threshold:
+                logger.warning(f"⚠️  Page load time {load_time:.2f}s exceeded threshold {self.load_time_threshold}s")
+            else:
+                logger.info(f"✅ Page load time {load_time:.2f}s within threshold {self.load_time_threshold}s")
+
+            assert load_time < self.load_time_threshold, f"Page load time {load_time:.2f}s exceeded {self.load_time_threshold}s threshold"
+            return load_time
+        except Exception as e:
+            load_time = time.time() - start_time
+            logger.error(f"❌ Navigation failed after {load_time:.2f}s: {e}")
+            raise
 
     def wait_for_load(self):
         """Wait for page to load completely"""

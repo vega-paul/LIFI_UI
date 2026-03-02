@@ -1,6 +1,8 @@
 import pytest
 import logging
 
+logger = logging.getLogger(__name__)
+
 pytest_plugins = ["pytest_playwright"]
 
 # Custom handler that flushes immediately after each log
@@ -38,7 +40,8 @@ root_logger.addHandler(immediate_file_handler)
 
 @pytest.fixture(scope="session")
 def browser_context_args(browser_context_args):
-    return {
+    logger.info("Setting up browser context arguments")
+    args = {
         **browser_context_args,
         "viewport": {
             "width": 1280,
@@ -47,6 +50,8 @@ def browser_context_args(browser_context_args):
         "ignore_https_errors": True,
         "bypass_csp": True,
     }
+    logger.info(f"Browser context args configured: {args}")
+    return args
 
 @pytest.fixture(scope="session")
 def browser_args(browser_args):

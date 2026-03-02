@@ -6,10 +6,12 @@ logger = logging.getLogger(__name__)
 
 @pytest.fixture
 def home_page(page):
-    logger.info("Setting up HomePage fixture")
+    logger.info("🏗️  Setting up HomePage fixture")
+    logger.info("📄 Creating HomePage instance")
     home_page = HomePage(page)
+    logger.info("🌐 Opening home page")
     load_time = home_page.open()
-    logger.info(f"HomePage opened successfully in {load_time:.2f} seconds")
+    logger.info(f"✅ HomePage opened successfully in {load_time:.2f} seconds")
     return home_page
 
 def test_navigate_home_page_switch_tabs(home_page):

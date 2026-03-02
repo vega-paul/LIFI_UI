@@ -35,12 +35,14 @@ jobs:
 
     - name: Check website accessibility
       run: |
-        echo "Checking website accessibility..."
+        echo "🔍 Checking website accessibility..."
+        echo "🌐 Testing connection to https://jumper.exchange/"
         if curl -f -s --max-time 10 https://jumper.exchange/ > /dev/null 2>&1; then
           echo "✅ Website is accessible"
         else
           echo "⚠️  Website not accessible, but continuing with tests..."
         fi
+        echo "📊 Website accessibility check completed"
 
     - name: Run pytest tests (${{ matrix.browser }} - ${{ matrix.test_file }})
       run: |

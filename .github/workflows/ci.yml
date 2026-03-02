@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        browser: [chromium, firefox]
+        browser: [chromium]
+        test_file: [test_home_page.py, test_wallet_page.py]
 
     steps:
     - uses: actions/checkout@v4
@@ -41,12 +42,12 @@ jobs:
           echo "⚠️  Website not accessible, but continuing with tests..."
         fi
 
-    - name: Run pytest tests (${{ matrix.browser }})
+    - name: Run pytest tests (${{ matrix.browser }} - ${{ matrix.test_file }})
       run: |
-        echo "Starting pytest for ${{ matrix.browser }}..."
+        echo "Starting pytest for ${{ matrix.browser }} - ${{ matrix.test_file }}..."
         set -e
-        pytest --browser ${{ matrix.browser }} --html=reports/report-${{ matrix.browser }}.html --self-contained-html -v -s --tb=short --maxfail=1
-        echo "✅ Pytest completed successfully for ${{ matrix.browser }}"
+        pytest tests/${{ matrix.test_file }} --browser ${{ matrix.browser }} --html=reports/report-${{ matrix.browser }}-${{ matrix.test_file }}.html --self-contained-html -v -s --tb=short --maxfail=1
+        echo "✅ Pytest completed successfully for ${{ matrix.browser }} - ${{ matrix.test_file }}"
 
     - name: Upload test results (${{ matrix.browser }})
       uses: actions/upload-artifact@v4

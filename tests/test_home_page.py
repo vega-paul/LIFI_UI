@@ -16,16 +16,16 @@ def test_navigate_home_page_switch_tabs(home_page):
     logger.info("Starting tab navigation test")
     # Switch to different navigation tabs
     home_page.switch_tab('Exchange')
-    logger.debug("Switched to Exchange tab")
+    logger.info("Switched to Exchange tab")
 
     home_page.switch_tab('Portfolio')
-    logger.debug("Switched to Portfolio tab")
+    logger.info("Switched to Portfolio tab")
 
     home_page.switch_tab('Missions')
-    logger.debug("Switched to Missions tab")
+    logger.info("Switched to Missions tab")
 
     home_page.switch_tab('Earn')
-    logger.debug("Switched to Earn tab")
+    logger.info("Switched to Earn tab")
     logger.info("Tab navigation test completed")
 
 def test_open_menu_navigate_learn(home_page):

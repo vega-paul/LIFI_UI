@@ -43,7 +43,9 @@ def browser_context_args(browser_context_args):
         "viewport": {
             "width": 1280,
             "height": 720,
-        }
+        },
+        "ignore_https_errors": True,
+        "bypass_csp": True,
     }
 
 @pytest.fixture(scope="session")
@@ -51,12 +53,56 @@ def browser_args(browser_args):
     return [
         *browser_args,
         "--disable-web-security",
-        "--disable-features=VizDisplayCompositor"
+        "--disable-features=VizDisplayCompositor",
+        "--disable-dev-shm-usage",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--disable-software-rasterizer",
+        "--disable-background-timer-throttling",
+        "--disable-backgrounding-occluded-windows",
+        "--disable-renderer-backgrounding",
     ]
 
 @pytest.fixture(scope="session")
-def browser_launch_args(browser_launch_args):
-    return {
+def browser_launch_args(browser_launch_args, request):
+    # Get browser name from pytest command line or default to chromium
+    browser_name = getattr(request.config.option, 'browser', ['chromium'])[0]
+
+    # Base launch args
+    launch_args = {
         **browser_launch_args,
-        "headless": False,
+        "headless": False,  # Start with headed mode for debugging
+        "args": [
+            "--disable-web-security",
+            "--disable-features=VizDisplayCompositor",
+            "--disable-dev-shm-usage",
+            "--no-sandbox",
+            "--disable-gpu",
+            "--disable-software-rasterizer",
+            "--disable-background-timer-throttling",
+            "--disable-backgrounding-occluded-windows",
+            "--disable-renderer-backgrounding",
+        ]
     }
+
+    # Browser-specific configurations
+    if browser_name == "chrome":
+        launch_args.update({
+            "executable_path": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+            "channel": "chrome",
+        })
+    elif browser_name == "edge":
+        launch_args.update({
+            "executable_path": "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+            "channel": "msedge",
+        })
+    elif browser_name == "firefox":
+        launch_args.update({
+            "firefox_user_prefs": {
+                "dom.disable_beforeunload": False,
+                "dom.max_script_run_time": 0,
+                "dom.max_chrome_script_run_time": 0,
+            }
+        })
+
+    return launch_args

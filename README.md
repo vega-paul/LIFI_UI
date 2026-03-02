@@ -55,6 +55,32 @@ pytest --browser firefox
 pytest  # Runs on all browsers by default
 ```
 
+### Troubleshooting Browser Issues
+
+If you encounter browser launch failures (common on macOS), try these solutions:
+
+#### Quick Fixes
+```bash
+# 1. Reinstall Playwright browsers
+playwright install --force
+
+# 2. Try different browser
+pytest --browser firefox
+pytest --browser chrome
+
+# 3. Run in headless mode
+pytest --headed=false
+
+# 4. Run diagnostic script
+python diagnose_browser.py
+```
+
+#### Advanced Troubleshooting
+- **macOS Issue**: Browser crashes with `SEGV_ACCERR` are common on macOS
+- **ARM Macs**: May require Rosetta or specific browser configurations
+- **Permissions**: Ensure full disk access for terminal/Python
+- **Virtual Environment**: Try running outside virtual environment
+
 ### Generate HTML report
 ```bash
 pytest --html=reports/report.html

@@ -64,19 +64,28 @@ Browser crashes with segmentation fault before any test execution.
    playwright install --force
    ```
 
-2. **System Check:** Verify system has required dependencies
+2. **Try Different Browser:** Firefox often works better on macOS
+   ```bash
+   pytest --browser firefox
+   ```
+
+3. **Headless Mode:** Test in headless mode (may work better)
+   ```bash
+   pytest --headed=false
+   ```
+
+4. **System Dependencies:** Install required macOS dependencies
    ```bash
    brew install cairo pango libffi
+   xcode-select --install  # Ensure Xcode tools
    ```
 
-3. **Configuration:** Test with headed mode
+5. **Run Diagnostic:** Use the diagnostic script
    ```bash
-   pytest --headed
+   python diagnose_browser.py
    ```
 
-4. **Security:** Check if security software is blocking browser execution
-
-5. **Alternative:** Consider using different test environment (Docker, CI/CD)
+6. **Alternative Environment:** Consider Docker or CI/CD environment
 
 ---
 

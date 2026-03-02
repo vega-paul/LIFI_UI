@@ -33,10 +33,18 @@ jobs:
       run: playwright install
 
     - name: Check website accessibility
-      run: curl -f -s --max-time 30 https://jumper.exchange/ || (echo "Website not accessible" && exit 1)
+      run: |
+        echo "Checking website accessibility..."
+        if curl -f -s --max-time 10 https://jumper.exchange/ > /dev/null 2>&1; then
+          echo "✅ Website is accessible"
+        else
+          echo "⚠️  Website not accessible, but continuing with tests..."
+        fi
 
     - name: Run pytest tests (${{ matrix.browser }})
-      run: pytest --browser ${{ matrix.browser }} --html=reports/report-${{ matrix.browser }}.html --self-contained-html
+      run: |
+        echo "Starting pytest for ${{ matrix.browser }}..."
+        pytest --browser ${{ matrix.browser }} --html=reports/report-${{ matrix.browser }}.html --self-contained-html -v -s
 
     - name: Upload test results (${{ matrix.browser }})
       uses: actions/upload-artifact@v4

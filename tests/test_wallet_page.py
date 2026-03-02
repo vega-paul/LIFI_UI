@@ -5,31 +5,33 @@ from pages.home_page import HomePage
 logger = logging.getLogger(__name__)
 
 @pytest.fixture
-def home_page(page):
-    logger.info("Setting up HomePage fixture")
+def wallet_home_page(page):
+    logger.info("🏗️  Setting up Wallet HomePage fixture")
+    logger.info("📄 Creating HomePage instance for wallet tests")
     home_page = HomePage(page)
+    logger.info("🌐 Opening home page for wallet testing")
     load_time = home_page.open()
-    logger.info(f"HomePage opened successfully in {load_time:.2f} seconds")
+    logger.info(f"✅ HomePage opened successfully in {load_time:.2f} seconds")
     return home_page
 
-def test_wallet_setup_happy_path(home_page, wallet_name="Abstract"):
+def test_wallet_setup_happy_path(wallet_home_page, wallet_name="Abstract"):
     logger.info("Starting wallet setup happy path test")
 
     # Validate page load times and basic page state
-    home_page.validate_url_contains('jumper')
-    home_page.validate_page_title()
+    wallet_home_page.validate_url_contains('jumper')
+    wallet_home_page.validate_page_title()
 
     # Validate that the connect button is present on the page
     try:
-        connect_button_count = home_page.page.locator(home_page.connect_wallet_button).count()
-        logger.info(f"Found {connect_button_count} connect button(s) with selector: {home_page.connect_wallet_button}")
-        assert connect_button_count > 0, f"No connect button found with selector: {home_page.connect_wallet_button}"
+        connect_button_count = wallet_home_page.page.locator(wallet_home_page.connect_wallet_button).count()
+        logger.info(f"Found {connect_button_count} connect button(s) with selector: {wallet_home_page.connect_wallet_button}")
+        assert connect_button_count > 0, f"No connect button found with selector: {wallet_home_page.connect_wallet_button}"
     except Exception as e:
         logger.error(f"Connect button validation failed: {e}")
-        pytest.skip(f"Connect wallet button not found with selector '{home_page.connect_wallet_button}' - may need selector update")
+        pytest.skip(f"Connect wallet button not found with selector '{wallet_home_page.connect_wallet_button}' - may need selector update")
 
     # Validate connect wallet button visibility before interaction
-    home_page.assert_element_visible(home_page.connect_wallet_button)
+    wallet_home_page.assert_element_visible(wallet_home_page.connect_wallet_button)
     logger.info("Connect wallet button is visible")
 
     # Test wallet setup using home page method
@@ -38,7 +40,7 @@ def test_wallet_setup_happy_path(home_page, wallet_name="Abstract"):
         import time
         start_time = time.time()
 
-        wallet_connect = home_page.setup_wallet()
+        wallet_connect = wallet_home_page.setup_wallet()
 
         modal_load_time = time.time() - start_time
         logger.info(f"Wallet modal appeared in {modal_load_time:.2f} seconds")
@@ -76,6 +78,6 @@ def test_wallet_setup_happy_path(home_page, wallet_name="Abstract"):
     except Exception as e:
         logger.warning(f"Wallet modal interaction test completed with expected limitations: {str(e)}")
         # Test passes even if modal interaction fails (due to test environment limitations)
-        assert hasattr(home_page, 'setup_wallet'), "Home page should have setup_wallet method"
+        assert hasattr(wallet_home_page, 'setup_wallet'), "Home page should have setup_wallet method"
 
     logger.info("Wallet setup happy path test completed")

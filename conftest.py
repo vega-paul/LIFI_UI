@@ -46,7 +46,6 @@ def browser_context_args(browser_context_args):
         },
         "ignore_https_errors": True,
         "bypass_csp": True,
-        "timeout": 30000,  # 30 second timeout for page operations
     }
 
 @pytest.fixture(scope="session")

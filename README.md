@@ -20,6 +20,20 @@ This project contains UI automation tests for the Jumper Exchange platform using
    npx playwright install
    ```
 
+4. **Setup Wallet Extensions (for wallet tests):**
+   ```bash
+   # Create extensions directory
+   mkdir -p extensions/coinbase
+
+   # Download Coinbase Wallet extension from Chrome Web Store
+   # Visit: https://chromewebstore.google.com/detail/coinbase-wallet-extension/hnfanknocfeofbddgcijnmhnfnkdnaad
+   # Download the .crx file and rename it to .zip, then extract to:
+   # extensions/coinbase/hnfanknocfeofbddgcijnmhnfnkdnaad/[version]/
+
+   # Alternative: Use a pre-configured extension directory
+   # The test will provide clear error messages if extensions are missing
+   ```
+
 ## Execution Instructions
 
 ### Run all tests

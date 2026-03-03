@@ -48,7 +48,7 @@ npx playwright test --headed
 
 ### Run specific test file
 ```bash
-npx playwright test e2e/jumper.spec.ts
+npx playwright test tests/jumper.spec.ts
 ```
 
 ### Run tests in specific browser
@@ -105,7 +105,7 @@ npx playwright test --reporter=line
 JumperUIAutomation/
 ├── docs/
 │   └── TestPlan.md          # Test plan and design
-├── e2e/
+├── tests/
 │   ├── jumper.spec.ts       # Home page test specifications
 │   └── wallet.spec.ts       # Wallet connection test specifications
 ├── pages/
@@ -126,14 +126,14 @@ JumperUIAutomation/
 
 ## Test Cases Covered
 
-### Home Page Tests (`e2e/jumper.spec.ts`)
+### Home Page Tests (`tests/jumper.spec.ts`)
 - Navigate to Jumper Exchange home page
 - Verify home page loads correctly
 - Navigate through main navigation tabs (Portfolio, Missions, Earn, Exchange)
 - Open main menu and navigate to Learn section
 - Open main menu and select Discord (opens in new tab)
 
-### Wallet Connection Tests (`e2e/wallet.spec.ts`)
+### Wallet Connection Tests (`tests/wallet.spec.ts`)
 - Verify basic wallet test infrastructure
 - Navigate to home page and verify loading
 - Check for wallet connection button presence

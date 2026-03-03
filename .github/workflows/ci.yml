@@ -61,6 +61,19 @@ jobs:
         fi
         echo "✅ Test execution step completed - preventing job cancellation"
 
+    - name: Prepare test artifacts
+      if: always()
+      run: |
+        echo "📦 Preparing test artifacts for upload..."
+        # Ensure directories exist
+        mkdir -p playwright-report/
+        mkdir -p test-results/
+        # Create a summary file if no reports exist
+        if [ ! -f "playwright-report/index.html" ]; then
+          echo "<html><body><h1>Test Results</h1><p>Tests failed to generate HTML report. Check logs for details.</p></body></html>" > playwright-report/index.html
+        fi
+        echo "✅ Test artifacts prepared"
+
     - name: Upload test results (${{ matrix.browser }})
       uses: actions/upload-artifact@v4
       if: always()

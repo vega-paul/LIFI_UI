@@ -1,6 +1,6 @@
 # Jumper Exchange UI Automation Framework
 
-This project contains UI automation tests for the Jumper Exchange platform using Playwright with pytest and Page Object Model (POM).
+This project contains UI automation tests for the Jumper Exchange platform using Playwright with TypeScript.
 
 ## Setup Instructions
 
@@ -10,53 +10,47 @@ This project contains UI automation tests for the Jumper Exchange platform using
    cd JumperUIAutomation
    ```
 
-2. **Create and activate virtual environment:**
+2. **Install Node.js dependencies:**
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   npm install
    ```
 
-3. **Install Python dependencies:**
+3. **Install Playwright browsers:**
    ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Install Playwright browsers:**
-   ```bash
-   playwright install
+   npx playwright install
    ```
 
 ## Execution Instructions
 
 ### Run all tests
 ```bash
-pytest
+npx playwright test
 ```
 
 ### Run tests in headed mode (visible browser)
 ```bash
-pytest --headed
+npx playwright test --headed
 ```
 
 ### Run specific test file
 ```bash
-pytest tests/test_home_page.py
+npx playwright test e2e/jumper.spec.ts
 ```
 
 ### Run tests in specific browser
 ```bash
-pytest --browser chromium  # Google Chrome/Chromium
-pytest --browser firefox   # Mozilla Firefox
-pytest --browser webkit    # Safari (WebKit)
+npx playwright test --project=chromium  # Google Chrome/Chromium
+npx playwright test --project=firefox   # Mozilla Firefox
+npx playwright test --project=webkit    # Safari (WebKit)
 ```
 
 ### Run tests on all browsers (parallel execution)
 ```bash
 # CI/CD runs on Chromium and Firefox automatically (Linux-compatible)
 # For local multi-browser testing, run separately:
-pytest --browser chromium  # Linux/macOS/Windows
-pytest --browser firefox   # Linux/macOS/Windows
-pytest --browser webkit    # macOS only (not available on Linux CI/CD)
+npx playwright test --project=chromium  # Linux/macOS/Windows
+npx playwright test --project=firefox   # Linux/macOS/Windows
+npx playwright test --project=webkit    # macOS only (not available on Linux CI/CD)
 ```
 
 ### Troubleshooting Browser Issues
@@ -66,33 +60,29 @@ If you encounter browser launch failures (common on macOS), try these solutions:
 #### Quick Fixes
 ```bash
 # 1. Reinstall Playwright browsers
-playwright install --force
+npx playwright install --force
 
 # 2. Try different browser
-pytest --browser firefox
-pytest --browser chrome
+npx playwright test --project=firefox
+npx playwright test --project=chromium
 
 # 3. Run in headless mode
-pytest --headed=false
-
-# 4. Run diagnostic script
-python diagnose_browser.py
+npx playwright test --headed=false
 ```
 
 #### Advanced Troubleshooting
 - **macOS Issue**: Browser crashes with `SEGV_ACCERR` are common on macOS
 - **ARM Macs**: May require Rosetta or specific browser configurations
-- **Permissions**: Ensure full disk access for terminal/Python
-- **Virtual Environment**: Try running outside virtual environment
+- **Permissions**: Ensure full disk access for terminal/Node.js
 
 ### Generate HTML report
 ```bash
-pytest --html=reports/report.html
+npx playwright show-report
 ```
 
-### View logs
+### View test results
 ```bash
-tail -f pytest.log
+npx playwright test --reporter=line
 ```
 
 ## Project Structure
@@ -101,15 +91,16 @@ tail -f pytest.log
 JumperUIAutomation/
 ├── docs/
 │   └── TestPlan.md          # Test plan and design
+├── e2e/
+│   └── jumper.spec.ts       # Test specifications using Page Object Model
 ├── pages/
-│   ├── base_page.py         # Base page class
-│   └── home_page.py         # Home page POM
-├── tests/
-│   └── test_home_page.py    # Test specifications
-├── utils/                   # Utility functions
-├── reports/                 # Test reports
-├── conftest.py              # Pytest configuration
-├── requirements.txt         # Python dependencies
+│   ├── base-page.ts         # Base page class with common functionality
+│   └── home-page.ts         # Home page object with page-specific methods
+├── javascript/
+│   └── test.js              # JavaScript utilities
+├── playwright-report/       # Test reports
+├── playwright.config.ts     # Playwright configuration
+├── package.json             # Node.js dependencies
 └── README.md
 ```
 
@@ -122,11 +113,10 @@ JumperUIAutomation/
 
 ## Configuration
 
-- **Framework:** Playwright with pytest
-- **Language:** Python
-- **Pattern:** Page Object Model
+- **Framework:** Playwright with @playwright/test
+- **Language:** TypeScript
 - **Browsers:** Chromium (Chrome), Firefox (CI/CD), WebKit (macOS local only)
-- **IDE:** VSCode configured for pytest with debugging support
+- **IDE:** VSCode configured for TypeScript and Playwright
 
 ## CI/CD
 
@@ -134,12 +124,11 @@ GitHub Actions workflow is configured to run tests on every push and pull reques
 
 ## Reports
 
-Test results are generated in HTML format and stored in the `reports/` directory.
+Test results are generated in HTML format and stored in the `playwright-report/` directory.
 
 ### Available Reports
-- **HTML Test Report**: `reports/test_report.html` - Comprehensive test execution results
+- **HTML Test Report**: `playwright-report/index.html` - Comprehensive test execution results
 - **Bug Reports**: `reports/bug_report.md` - Detailed bug tracking and analysis
-- **Test Logs**: `pytest.log` - Real-time test execution logs with detailed tracing
 
 ## Deliverables Status
 
@@ -148,15 +137,14 @@ Test results are generated in HTML format and stored in the `reports/` directory
 1. **Test Plan** — Comprehensive test plan in `docs/TestPlan.md`
    - Scope, objectives, test cases, approach, and risk assessment
 
-2. **Test Suite** — Complete GitHub repository at `https://github.com/vega-paul/LIFI_API`
-   - Well-structured codebase with Page Object Model
+2. **Test Suite** — Complete GitHub repository at `https://github.com/vega-paul/LIFI_UI.git`
+   - Well-structured codebase with TypeScript and Playwright
    - Comprehensive logging and error handling
    - CI/CD pipeline configured
 
 3. **Reports** — Test results and bug tracking
-   - HTML test report: `reports/test_report.html`
+   - HTML test report: `playwright-report/index.html`
    - Bug reports: `reports/bug_report.md`
-   - Real-time logs: `pytest.log`
 
 4. **README** — Complete setup and execution documentation
    - Installation instructions

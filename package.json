@@ -1,0 +1,26 @@
+{
+  "name": "jumperuiautomation",
+  "version": "1.0.0",
+  "description": "This project contains UI automation tests for the Jumper Exchange platform using Playwright with TypeScript.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "dependencies": {
+    "fsevents": "^2.3.2",
+    "playwright": "^1.58.2",
+    "playwright-core": "^1.58.2",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@synthetixio/synpress": "^3.7.3",
+    "@synthetixio/synpress-tsconfig": "^0.0.14",
+    "@types/node": "^25.3.3"
+  },
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

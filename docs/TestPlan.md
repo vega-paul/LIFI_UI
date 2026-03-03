@@ -6,10 +6,10 @@ The objective of this test plan is to design and implement UI automation tests f
 
 ## Approach
 
-- **Testing Framework:** Playwright with pytest
+- **Testing Framework:** Playwright with @playwright/test
 - **Design Pattern:** Page Object Model (POM)
 - **Browsers:** Chrome, Firefox (Local only)
-- **Test Execution:** Automated via pytest with parallel browser execution
+- **Test Execution:** Automated via Playwright with parallel browser execution
 
 ## Test Cases
 
@@ -58,8 +58,9 @@ The objective of this test plan is to design and implement UI automation tests f
 
 ## Environment
 
-- Python 3.11
-- Playwright with pytest
+- Node.js
+- TypeScript
+- Playwright with @playwright/test
 - Target Browsers: Chrome, Edge, Firefox
 
 ## Validation Parameters

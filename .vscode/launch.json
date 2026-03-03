@@ -2,31 +2,44 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python: Debug Tests",
-      "type": "python",
+      "name": "Debug Tests",
+      "type": "node",
       "request": "launch",
-      "module": "pytest",
+      "program": "${workspaceFolder}/node_modules/.bin/playwright",
       "args": [
-        "--config-file",
-        "pytest.ini",
-        "-v"
+        "test",
+        "--headed",
+        "--project=chromium"
       ],
       "console": "integratedTerminal",
-      "justMyCode": false,
+      "internalConsoleOptions": "neverOpen",
       "cwd": "${workspaceFolder}"
     },
     {
-      "name": "Python: Run Current Test",
-      "type": "python",
+      "name": "Debug Current Test File",
+      "type": "node",
       "request": "launch",
-      "module": "pytest",
+      "program": "${workspaceFolder}/node_modules/.bin/playwright",
       "args": [
-        "--config-file",
-        "pytest.ini",
-        "${file}"
+        "test",
+        "${file}",
+        "--headed",
+        "--project=chromium"
       ],
       "console": "integratedTerminal",
-      "justMyCode": false,
+      "internalConsoleOptions": "neverOpen",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Run Playwright Codegen",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/playwright",
+      "args": [
+        "codegen",
+        "https://jumper.exchange/"
+      ],
+      "console": "integratedTerminal",
       "cwd": "${workspaceFolder}"
     }
   ]

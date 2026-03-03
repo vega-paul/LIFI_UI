@@ -1,12 +1,16 @@
 {
-  "python.defaultInterpreterPath": "./venv/bin/python",
-  "python.testing.pytestEnabled": true,
-  "python.testing.unittestEnabled": false,
-  "python.testing.pytestArgs": [
-    "--headed",
-    "--browser-channel=chrome"
-  ],
-  "python.testing.pytestPath": "pytest",
-  "python.testing.cwd": "${workspaceFolder}",
-  "python.testing.autoTestDiscoverOnSaveEnabled": true
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.suggest.autoImports": true,
+  "editor.formatOnSave": true,
+  "playwright.env": {
+    "CI": "true"
+  },
+  "files.associations": {
+    "*.spec.ts": "typescript"
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/playwright-report": true,
+    "**/test-results": true
+  }
 }

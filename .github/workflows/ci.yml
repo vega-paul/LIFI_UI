@@ -48,11 +48,18 @@ jobs:
         echo "🚀 Starting Playwright tests for ${{ matrix.browser }} (all tests)..."
         # Clean reports directory to avoid uploading old local reports
         rm -rf playwright-report/
+        rm -rf test-results/
         mkdir -p playwright-report/
-        # Run tests with HTML and JSON reporters - Playwright will generate HTML report even on failures
+        mkdir -p test-results/
+        # Run tests with HTML and JSON reporters - Playwright will generate HTML report in playwright-report/
         npx playwright test --project=${{ matrix.browser }} --reporter=html,json --output=test-results || true
         PLAYWRIGHT_EXIT_CODE=$?
         echo "📊 Playwright exit code: $PLAYWRIGHT_EXIT_CODE"
+        # List files to debug
+        echo "📁 Files in playwright-report/:"
+        ls -la playwright-report/ || echo "Directory empty or not found"
+        echo "📁 Files in test-results/:"
+        ls -la test-results/ || echo "Directory empty or not found"
         if [ $PLAYWRIGHT_EXIT_CODE -eq 0 ]; then
           echo "✅ Playwright tests completed successfully for ${{ matrix.browser }}"
           echo "PLAYWRIGHT_SUCCESS=true" >> $GITHUB_ENV
@@ -61,14 +68,6 @@ jobs:
           echo "PLAYWRIGHT_SUCCESS=false" >> $GITHUB_ENV
         fi
         echo "✅ Test execution step completed - preventing job cancellation"
-
-    - name: Generate HTML report
-      if: always()
-      run: |
-        echo "📊 Generating Playwright HTML report..."
-        # Playwright show-report will generate/update the HTML report
-        npx playwright show-report --reporter=html playwright-report/ || echo "Report generation completed"
-        echo "✅ HTML report generation completed"
 
     - name: Upload test results (${{ matrix.browser }})
       uses: actions/upload-artifact@v4

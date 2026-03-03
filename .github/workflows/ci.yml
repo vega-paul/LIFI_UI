@@ -48,7 +48,8 @@ jobs:
         echo "🚀 Starting Playwright tests for ${{ matrix.browser }} (all tests)..."
         # Clean reports directory to avoid uploading old local reports
         rm -rf playwright-report/
-        npx playwright test --project=${{ matrix.browser }} --reporter=html || true
+        mkdir -p playwright-report/
+        npx playwright test --project=${{ matrix.browser }} --reporter=html,json --output=test-results || true
         PLAYWRIGHT_EXIT_CODE=$?
         echo "📊 Playwright exit code: $PLAYWRIGHT_EXIT_CODE"
         if [ $PLAYWRIGHT_EXIT_CODE -eq 0 ]; then
@@ -66,7 +67,9 @@ jobs:
       continue-on-error: true
       with:
         name: test-results-${{ matrix.browser }}
-        path: playwright-report/
+        path: |
+          playwright-report/
+          test-results/
         retention-days: 30
 
     - name: Test completion summary

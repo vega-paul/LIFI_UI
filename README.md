@@ -92,13 +92,19 @@ JumperUIAutomation/
 ├── docs/
 │   └── TestPlan.md          # Test plan and design
 ├── e2e/
-│   └── jumper.spec.ts       # Test specifications using Page Object Model
+│   ├── jumper.spec.ts       # Home page test specifications
+│   └── wallet.spec.ts       # Wallet connection test specifications
 ├── pages/
 │   ├── base-page.ts         # Base page class with common functionality
-│   └── home-page.ts         # Home page object with page-specific methods
-├── javascript/
-│   └── test.js              # JavaScript utilities
-├── playwright-report/       # Test reports
+│   ├── home-page.ts         # Home page object with page-specific methods
+│   └── index.ts             # Page object exports
+├── wallet-setup/
+│   └── metamask.setup.ts    # MetaMask wallet setup utilities
+├── fixtures.ts              # Playwright test fixtures
+├── playwright-report/       # HTML test reports
+├── test-results/            # Screenshots, videos, and traces
+├── reports/
+│   └── test_report.html     # Additional test reports
 ├── playwright.config.ts     # Playwright configuration
 ├── package.json             # Node.js dependencies
 └── README.md
@@ -106,10 +112,18 @@ JumperUIAutomation/
 
 ## Test Cases Covered
 
-- Wallet Setup
-- Home page navigation and tab switching
-- Menu navigation to Learn section
-- Menu selection of Discord
+### Home Page Tests (`e2e/jumper.spec.ts`)
+- Navigate to Jumper Exchange home page
+- Verify home page loads correctly
+- Navigate through main navigation tabs (Portfolio, Missions, Earn, Exchange)
+- Open main menu and navigate to Learn section
+- Open main menu and select Discord (opens in new tab)
+
+### Wallet Connection Tests (`e2e/wallet.spec.ts`)
+- Verify basic wallet test infrastructure
+- Navigate to home page and verify loading
+- Check for wallet connection button presence
+- Basic wallet connection workflow validation
 
 ## Configuration
 
@@ -120,7 +134,26 @@ JumperUIAutomation/
 
 ## CI/CD
 
-GitHub Actions workflow is configured to run tests on every push and pull request.
+GitHub Actions workflow is configured to run tests on every push and pull request to main/master branches.
+
+### CI Features
+- **Automated Testing**: Runs on Ubuntu Linux with Chromium browser
+- **Headless Execution**: Tests run in headless mode for CI efficiency
+- **System Dependencies**: Installs required Linux libraries for browser support
+- **Website Accessibility Check**: Verifies Jumper Exchange site is accessible before testing
+- **Comprehensive Reporting**: Generates HTML and JSON test reports
+- **Artifact Upload**: Saves test results, screenshots, videos, and traces as downloadable artifacts
+- **Error Handling**: Continues workflow even if tests fail, ensuring reports are always generated
+
+### Workflow Triggers
+- Push to `main` or `master` branches
+- Pull requests to `main` or `master` branches
+
+### Test Environment
+- **OS**: Ubuntu Latest
+- **Node.js**: Version 20
+- **Browser**: Chromium (Chrome)
+- **Test Runner**: 1 worker (sequential execution in CI)
 
 ## Reports
 
@@ -152,9 +185,9 @@ Test results are generated in HTML format and stored in the `playwright-report/`
    - Project structure overview
 
 5. **Bonus: CI/CD Workflow** — GitHub Actions pipeline
-   - Automated testing on push/PR for all browsers (Chrome, Edge, Firefox)
-   - Parallel browser execution in CI/CD
-   - Separate test result artifacts for each browser
+   - Automated testing on push/PR with Chromium browser
+   - Headless execution with comprehensive error handling
+   - Test artifacts uploaded (HTML reports, screenshots, traces)
 
 ### 🔧 Current Issues
 

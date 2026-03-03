@@ -37,16 +37,39 @@ test.describe("Wallet Connection Tests", () => {
         console.log('🎉 Basic wallet test infrastructure verified');
     });
 
-    test("connect wallet with MetaMask extension (persistent context)", async () => {
-        console.log('🧪 Starting MetaMask wallet connection test with extension...');
+    test("connect wallet with Coinbase extension (persistent context)", async () => {
+        console.log('🧪 Starting Coinbase wallet connection test with extension...');
 
-        // Path to MetaMask extension
-        const extensionPath = path.join(__dirname, '..', 'extensions', 'metamask');
+        // Path to Coinbase extension
+        const extensionPath = path.join(__dirname, '..', 'extensions', 'coinbase');
+
+        // Check if Coinbase extension exists
+        const fs = require('fs');
+        if (!fs.existsSync(extensionPath)) {
+            console.log('❌ Coinbase extension not found!');
+            console.log(`📁 Expected location: ${extensionPath}`);
+            console.log('📋 To install Coinbase extension:');
+            console.log('   1. Download Coinbase Wallet from Chrome Web Store');
+            console.log('   2. Unzip the .crx file (rename to .zip first)');
+            console.log('   3. Place unzipped folder in extensions/coinbase/');
+            throw new Error(`Coinbase extension not found at ${extensionPath}`);
+        }
+
+        console.log(`✅ Coinbase extension found at: ${extensionPath}`);
+
+        // Find the actual extension directory (it might be nested)
+        const items = fs.readdirSync(extensionPath, { withFileTypes: true });
+        const extensionDirs = items
+            .filter((item: any) => item.isDirectory())
+            .map((item: any) => path.join(extensionPath, item.name));
+
+        const actualExtensionPath = extensionDirs.length > 0 ? extensionDirs[0] : extensionPath;
+        console.log(`📂 Using extension path: ${actualExtensionPath}`);
 
         // Create unique user data directory for this test
         const userDataDir = path.join(__dirname, '..', 'temp_user_data_wallet_' + Date.now());
 
-        // Launch browser with MetaMask extension using persistent context
+        // Launch browser with Coinbase extension using persistent context
         const context = await chromium.launchPersistentContext(userDataDir, {
             headless: process.env.CI ? true : false, // Headless in CI, visible locally
             args: [
@@ -67,20 +90,20 @@ test.describe("Wallet Connection Tests", () => {
             await homePage.goto();
             await homePage.verifyHomePageLoaded();
 
-            console.log('✅ Home page loaded successfully with MetaMask extension');
+            console.log('✅ Home page loaded successfully with Coinbase extension');
 
-            // Wait for MetaMask extension to load
+            // Wait for Coinbase extension to load
             await page.waitForTimeout(3000);
 
             // Click connect wallet button
             await page.getByRole('button', { name: 'Connect', exact: true }).click();
 
-            // Wait for wallet modal and select MetaMask
-            const metamaskButton = page.locator('button:has-text("MetaMask")').first();
-            await metamaskButton.waitFor({ state: 'visible', timeout: 10000 });
-            await metamaskButton.click();
+            // Wait for wallet modal and select Coinbase
+            const coinbaseButton = page.locator('button:has-text("Coinbase")').first();
+            await coinbaseButton.waitFor({ state: 'visible', timeout: 10000 });
+            await coinbaseButton.click();
 
-            console.log('✅ MetaMask connection initiated');
+            console.log('✅ Coinbase connection initiated');
 
             // Wait for MetaMask popup/extension page
             await page.waitForTimeout(2000);

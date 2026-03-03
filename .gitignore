@@ -10,3 +10,8 @@ reports/*.log
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Test artifacts
+extensions/
+temp_user_data*/
+temp_user_data_*/

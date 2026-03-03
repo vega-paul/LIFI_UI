@@ -49,6 +49,7 @@ jobs:
         # Clean reports directory to avoid uploading old local reports
         rm -rf playwright-report/
         mkdir -p playwright-report/
+        # Run tests with HTML and JSON reporters - Playwright will generate HTML report even on failures
         npx playwright test --project=${{ matrix.browser }} --reporter=html,json --output=test-results || true
         PLAYWRIGHT_EXIT_CODE=$?
         echo "📊 Playwright exit code: $PLAYWRIGHT_EXIT_CODE"
@@ -61,18 +62,13 @@ jobs:
         fi
         echo "✅ Test execution step completed - preventing job cancellation"
 
-    - name: Prepare test artifacts
+    - name: Generate HTML report
       if: always()
       run: |
-        echo "📦 Preparing test artifacts for upload..."
-        # Ensure directories exist
-        mkdir -p playwright-report/
-        mkdir -p test-results/
-        # Create a summary file if no reports exist
-        if [ ! -f "playwright-report/index.html" ]; then
-          printf '<!DOCTYPE html>\n<html>\n<head>\n<title>Test Results</title>\n</head>\n<body>\n<h1>Test Results</h1>\n<p>Tests failed to generate HTML report. Check logs for details.</p>\n<p>Generated: %s</p>\n</body>\n</html>\n' "$(date -u '+%Y-%m-%d %H:%M:%S UTC')" > playwright-report/index.html
-        fi
-        echo "✅ Test artifacts prepared"
+        echo "📊 Generating Playwright HTML report..."
+        # Playwright show-report will generate/update the HTML report
+        npx playwright show-report --reporter=html playwright-report/ || echo "Report generation completed"
+        echo "✅ HTML report generation completed"
 
     - name: Upload test results (${{ matrix.browser }})
       uses: actions/upload-artifact@v4

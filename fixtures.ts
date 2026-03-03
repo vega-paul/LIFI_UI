@@ -40,7 +40,7 @@ export const test = base.extend<{
         }
 
         // Skip MetaMask setup for now - just verify browser works
-        console.log('ℹ️ Skipping MetaMask wallet initialization for basic infrastructure test');
+        console.log('Skipping MetaMask wallet initialization for basic infrastructure test');
 
         await use(context);
 

@@ -34,18 +34,18 @@ jobs:
 
     - name: Check website accessibility
       run: |
-        echo "🔍 Checking website accessibility..."
-        echo "🌐 Testing connection to https://jumper.exchange/"
+        echo "Checking website accessibility..."
+        echo "Testing connection to https://jumper.exchange/"
         if curl -f -s --max-time 10 https://jumper.exchange/ > /dev/null 2>&1; then
-          echo "✅ Website is accessible"
+          echo "Website is accessible"
         else
-          echo "⚠️  Website not accessible, but continuing with tests..."
+          echo "Website not accessible, but continuing with tests..."
         fi
-        echo "📊 Website accessibility check completed"
+        echo "Website accessibility check completed"
 
     - name: Run Playwright tests (${{ matrix.browser }})
       run: |
-        echo "🚀 Starting Playwright tests for ${{ matrix.browser }} (all tests)..."
+        echo "Starting Playwright tests for ${{ matrix.browser }} (all tests)..."
         # Clean reports directory to avoid uploading old local reports
         rm -rf playwright-report/
         rm -rf test-results/
@@ -54,25 +54,25 @@ jobs:
         # Run tests with HTML and JSON reporters - Playwright will generate HTML report in playwright-report/
         npx playwright test --project=${{ matrix.browser }} --reporter=html,json --output=test-results || true
         PLAYWRIGHT_EXIT_CODE=$?
-        echo "📊 Playwright exit code: $PLAYWRIGHT_EXIT_CODE"
+        echo "Playwright exit code: $PLAYWRIGHT_EXIT_CODE"
         # List files to debug
-        echo "📁 Files in playwright-report/:"
+        echo "Files in playwright-report/:"
         ls -la playwright-report/ || echo "Directory empty or not found"
-        echo "📁 Files in test-results/:"
+        echo "Files in test-results/:"
         ls -la test-results/ || echo "Directory empty or not found"
         if [ $PLAYWRIGHT_EXIT_CODE -eq 0 ]; then
-          echo "✅ Playwright tests completed successfully for ${{ matrix.browser }}"
+          echo "Playwright tests completed successfully for ${{ matrix.browser }}"
           echo "PLAYWRIGHT_SUCCESS=true" >> $GITHUB_ENV
         else
-          echo "❌ Playwright tests failed with exit code $PLAYWRIGHT_EXIT_CODE for ${{ matrix.browser }}"
+          echo "Playwright tests failed with exit code $PLAYWRIGHT_EXIT_CODE for ${{ matrix.browser }}"
           echo "PLAYWRIGHT_SUCCESS=false" >> $GITHUB_ENV
         fi
-        echo "✅ Test execution step completed - preventing job cancellation"
+        echo "Test execution step completed - preventing job cancellation"
 
     - name: Prepare and upload test artifacts
       if: always()
       run: |
-        echo "📦 Preparing test artifacts for upload..."
+        echo "Preparing test artifacts for upload..."
 
         # Ensure directories exist
         mkdir -p playwright-report/
@@ -80,18 +80,18 @@ jobs:
 
         # Check if HTML report exists, create minimal one if not
         if [ ! -f "playwright-report/index.html" ]; then
-          echo "⚠️ No HTML report found, creating minimal report..."
+          echo "No HTML report found, creating minimal report..."
           printf '<!DOCTYPE html>\n<html>\n<head>\n<title>Playwright Test Report</title>\n</head>\n<body>\n<h1>Test Report</h1>\n<p>Tests failed to execute. Check logs for details.</p>\n<p>Generated: %s</p>\n</body>\n</html>\n' "$(date -u '+%Y-%m-%d %H:%M:%S UTC')" > playwright-report/index.html
-          echo "✅ Created minimal HTML report"
+          echo "Created minimal HTML report"
         fi
 
         # Create a placeholder file in test-results if empty
         if [ -z "$(ls -A test-results/ 2>/dev/null)" ]; then
           echo "Test artifacts directory" > test-results/README.md
-          echo "✅ Created placeholder in test-results/"
+          echo "Created placeholder in test-results/"
         fi
 
-        echo "📊 Final directory contents:"
+        echo "Final directory contents:"
         echo "playwright-report/:"
         ls -la playwright-report/ || echo "No files"
         echo "test-results/:"
@@ -111,9 +111,9 @@ jobs:
     - name: Test completion summary
       if: always()
       run: |
-        echo "🎉 Test execution completed for ${{ matrix.browser }}"
-        echo "📊 Test results uploaded as: test-results-${{ matrix.browser }}"
-        echo "📄 HTML report available at: playwright-report/index.html"
-        echo "✅ Job completed successfully - preventing GitHub Actions cancellation"
+        echo "Test execution completed for ${{ matrix.browser }}"
+        echo "Test results uploaded as: test-results-${{ matrix.browser }}"
+        echo "HTML report available at: playwright-report/index.html"
+        echo "Job completed successfully - preventing GitHub Actions cancellation"
         # Add a small delay to ensure clean job completion
         sleep 2

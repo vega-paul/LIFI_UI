@@ -1,17 +1,17 @@
-import { test, expect, chromium } from "@playwright/test";
+import { test, chromium } from "@playwright/test";
 import { HomePage } from "../pages";
 import path from "path";
 
 test.describe("Wallet Connection Tests", () => {
     test("verify basic wallet test infrastructure works", async ({ page }) => {
-        console.log('🧪 Starting basic wallet infrastructure test...');
+        console.log('Starting basic wallet infrastructure test...');
 
         // Initialize home page
         const homePage = new HomePage(page);
         await homePage.goto();
         await homePage.verifyHomePageLoaded();
 
-        console.log('✅ Home page loaded successfully');
+        console.log('Home page loaded successfully');
 
         await page.getByRole('button', { name: 'Connect', exact: true }).click();
         const page1Promise = page.waitForEvent('popup');
@@ -20,25 +20,17 @@ test.describe("Wallet Connection Tests", () => {
         const page1 = await page1Promise;
         await page1.getByRole('button', { name: 'Create account' }).click();
         await page1.getByRole('textbox', { name: 'name@email.com' }).click();
-        // await page1.getByRole('textbox', { name: 'name@email.com' }).fill('paul.webb@hotmail.co.uk');
-        // await page1.getByRole('button', { name: 'Continue' }).click();
-        // await page1.locator('input[name="code0"]').click();
-        // await page1.locator('input[name="code0"]').fill('0');
-        // await page1.locator('input[name="code1"]').fill('7');
-        // await page1.locator('input[name="code2"]').fill('8');
-        // await page1.locator('input[name="code3"]').fill('8');
-        // await page1.locator('input[name="code4"]').fill('7');
-        // await page1.locator('input[name="code5"]').fill('2');
+        // await page1.getByRole('textbox', { name: 'name@email.com' }).fill('<email_address>');
         await page1.getByRole('button', { name: 'I\'ll Do This Later' }).click();
         await page1.getByTestId('connection-request-continue-button').click();
         await page.getByRole('button', { name: 'wallet-avatar chain-avatar' }).click();
         await page.locator('#disconnect-wallet-button').click();
 
-        console.log('🎉 Basic wallet test infrastructure verified');
+        console.log('Basic wallet test infrastructure verified');
     });
 
     test("connect wallet with Coinbase extension (persistent context)", async () => {
-        console.log('🧪 Starting Coinbase wallet connection test with extension...');
+        console.log('Starting Coinbase wallet connection test with extension...');
 
         // Path to Coinbase extension
         const extensionPath = path.join(__dirname, '..', 'extensions', 'coinbase');
@@ -46,16 +38,16 @@ test.describe("Wallet Connection Tests", () => {
         // Check if Coinbase extension exists
         const fs = require('fs');
         if (!fs.existsSync(extensionPath)) {
-            console.log('❌ Coinbase extension not found!');
-            console.log(`📁 Expected location: ${extensionPath}`);
-            console.log('📋 To install Coinbase extension:');
+            console.log('Coinbase extension not found!');
+            console.log(`Expected location: ${extensionPath}`);
+            console.log('To install Coinbase extension:');
             console.log('   1. Download Coinbase Wallet from Chrome Web Store');
             console.log('   2. Unzip the .crx file (rename to .zip first)');
             console.log('   3. Place unzipped folder in extensions/coinbase/');
             throw new Error(`Coinbase extension not found at ${extensionPath}`);
         }
 
-        console.log(`✅ Coinbase extension found at: ${extensionPath}`);
+        console.log(`Coinbase extension found at: ${extensionPath}`);
 
         // Find the actual extension directory (it might be nested)
         const items = fs.readdirSync(extensionPath, { withFileTypes: true });
@@ -64,7 +56,7 @@ test.describe("Wallet Connection Tests", () => {
             .map((item: any) => path.join(extensionPath, item.name));
 
         const actualExtensionPath = extensionDirs.length > 0 ? extensionDirs[0] : extensionPath;
-        console.log(`📂 Using extension path: ${actualExtensionPath}`);
+        console.log(`Using extension path: ${actualExtensionPath}`);
 
         // Create unique user data directory for this test
         const userDataDir = path.join(__dirname, '..', 'temp_user_data_wallet_' + Date.now());
@@ -90,7 +82,7 @@ test.describe("Wallet Connection Tests", () => {
             await homePage.goto();
             await homePage.verifyHomePageLoaded();
 
-            console.log('✅ Home page loaded successfully with Coinbase extension');
+            console.log('Home page loaded successfully with Coinbase extension');
 
             // Wait for Coinbase extension to load
             await page.waitForTimeout(3000);
@@ -103,7 +95,7 @@ test.describe("Wallet Connection Tests", () => {
             await coinbaseButton.waitFor({ state: 'visible', timeout: 10000 });
             await coinbaseButton.click();
 
-            console.log('✅ Coinbase connection initiated');
+            console.log('Coinbase connection initiated');
 
             // Wait for MetaMask popup/extension page
             await page.waitForTimeout(2000);
@@ -117,7 +109,7 @@ test.describe("Wallet Connection Tests", () => {
             if (metamaskPages.length > 0) {
                 const metamaskPage = metamaskPages[0];
                 if (metamaskPage) {
-                    console.log('✅ MetaMask extension page found');
+                    console.log('MetaMask extension page found');
 
                     // Handle MetaMask connection flow
                     await metamaskPage.waitForLoadState();
@@ -135,18 +127,18 @@ test.describe("Wallet Connection Tests", () => {
                         for (const button of connectButtons) {
                             try {
                                 await button.first().click({ timeout: 2000 });
-                                console.log('✅ MetaMask connection step completed');
+                                console.log('MetaMask connection step completed');
                                 break;
                             } catch (e) {
                                 // Button not found, try next one
                             }
                         }
                     } catch (e) {
-                        console.log('⚠️ Could not complete MetaMask approval flow');
+                        console.log('Could not complete MetaMask approval flow');
                     }
                 }
             } else {
-                console.log('⚠️ MetaMask extension page not found');
+                console.log('MetaMask extension page not found');
             }
 
             // Check if wallet is connected (look for wallet avatar or address)
@@ -167,29 +159,29 @@ test.describe("Wallet Connection Tests", () => {
             }
 
             if (isConnected) {
-                console.log('✅ Wallet successfully connected');
+                console.log('Wallet successfully connected');
 
                 // Test disconnect if possible
                 try {
                     const disconnectButton = page.locator('#disconnect-wallet-button').first();
                     if (await disconnectButton.isVisible({ timeout: 2000 })) {
                         await disconnectButton.click();
-                        console.log('✅ Wallet disconnected successfully');
+                        console.log('Wallet disconnected successfully');
                     }
                 } catch (e) {
-                    console.log('⚠️ Could not test disconnect functionality');
+                    console.log('Could not test disconnect functionality');
                 }
             } else {
-                console.log('⚠️ Wallet connection status unclear - may need manual verification');
+                console.log('Wallet connection status unclear - may need manual verification');
             }
 
         } catch (error) {
-            console.log('❌ MetaMask wallet test failed:', error instanceof Error ? error.message : String(error));
+            console.log('MetaMask wallet test failed:', error instanceof Error ? error.message : String(error));
             // Don't fail the test, just log the error for debugging
         } finally {
             // Clean up context
             await context.close();
-            console.log('🎉 MetaMask wallet extension test completed');
+            console.log('MetaMask wallet extension test completed');
         }
     });
 })

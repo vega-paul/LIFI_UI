@@ -70,7 +70,7 @@ jobs:
         mkdir -p test-results/
         # Create a summary file if no reports exist
         if [ ! -f "playwright-report/index.html" ]; then
-          echo "<html><body><h1>Test Results</h1><p>Tests failed to generate HTML report. Check logs for details.</p></body></html>" > playwright-report/index.html
+          printf '<!DOCTYPE html>\n<html>\n<head>\n<title>Test Results</title>\n</head>\n<body>\n<h1>Test Results</h1>\n<p>Tests failed to generate HTML report. Check logs for details.</p>\n<p>Generated: %s</p>\n</body>\n</html>\n' "$(date -u '+%Y-%m-%d %H:%M:%S UTC')" > playwright-report/index.html
         fi
         echo "✅ Test artifacts prepared"
 
